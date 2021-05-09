@@ -1,2 +1,4 @@
-# proxy-objects
-A proxy object injection for .NET dependency injection.
+# Proxy Objects
+A proxy object injection for the .NET dependency injection.
+
+:warning: This project is in early development.
