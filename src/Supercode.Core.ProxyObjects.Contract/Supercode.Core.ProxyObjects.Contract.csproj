@@ -23,4 +23,8 @@
 		<RepositoryUrl>https://github.com/cschulzsuper/proxy-objects</RepositoryUrl>
 	</PropertyGroup>
 
+	<ItemGroup>
+		<None Include="icon.png" Pack="true" PackagePath="\" />
+	</ItemGroup>
+
 </Project>
