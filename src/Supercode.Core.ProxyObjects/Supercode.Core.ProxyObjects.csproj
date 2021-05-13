@@ -3,6 +3,23 @@
 	<PropertyGroup>
 		<TargetFramework>net5.0</TargetFramework>
 		<Nullable>enable</Nullable>
+
+		<Authors>Christian Schulz</Authors>
+		<Company></Company>
+		<Copyright>Copyright 2021 (c) Christian Schulz. All rights reserved.</Copyright>
+
+		<Description>A proxy object injection for the .NET dependency injection..</Description>
+		<IncludeSymbols>true</IncludeSymbols>
+		<SymbolPackageFormat>snupkg</SymbolPackageFormat>
+
+		<!-- NuGet settings -->
+		<PackageId>Supercode.Core.ProxyObjects</PackageId>
+		<PackageTags>Proxy Objects;Dependency Injection;ASP.NET Core;CSharp;.NET</PackageTags>
+		<PackageLicenseExpression>MIT</PackageLicenseExpression>
+		<PackageProjectUrl>https://github.com/cschulzsuper/proxy-objects</PackageProjectUrl>
+		<PackageIcon>icon.png</PackageIcon>
+		<RepositoryType>git</RepositoryType>
+		<RepositoryUrl>https://github.com/cschulzsuper/proxy-objects</RepositoryUrl>
 	</PropertyGroup>
 
 	<ItemGroup>
