@@ -12,7 +12,7 @@
 	</ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Supercode.Core.ProxyObjects.Contract\Supercode.Core.ProxyObjects.Contract.csproj" />
+    <ProjectReference Include="..\Supercode.Core.ProxyObjects\Supercode.Core.ProxyObjects.csproj" />
   </ItemGroup>
 
 </Project>

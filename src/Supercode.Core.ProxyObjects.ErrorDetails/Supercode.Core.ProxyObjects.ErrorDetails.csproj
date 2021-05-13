@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFramework>net5.0</TargetFramework>
+		<RootNamespace>Supercode.Core.ProxyObjects</RootNamespace>
+		<Nullable>enable</Nullable>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\Supercode.Core.ProxyObjects.Contract\Supercode.Core.ProxyObjects.Contract.csproj" />
+	</ItemGroup>
+
+</Project>
