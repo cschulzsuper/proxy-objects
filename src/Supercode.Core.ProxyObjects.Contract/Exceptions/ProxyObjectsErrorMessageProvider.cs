@@ -3,9 +3,9 @@ using Supercode.Core.ProxyObjects.Filters.ScopeValues;
 using System;
 using System.Reflection;
 
-namespace Supercode.Core.ProxyObjects.ErrorDetails
+namespace Supercode.Core.ProxyObjects.Exceptions
 {
-    public class ProxyObjectsErrorMessageProvider // : IErrorMessageProvider
+    public class ProxyObjectsErrorMessageProvider
     {
         public FormattableString? GetOrDefaultAsync(MemberInfo constraint)
         {

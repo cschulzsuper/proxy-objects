@@ -1,0 +1,128 @@
+name: Deploy Master
+
+on:
+  release:
+    types: [ published ]
+
+env:
+    PROJECT_NAME_IMPLEMENTATION: Supercode.Core.ProxyObjects
+    PROJECT_NAME_CONTRACT: Supercode.Core.ProxyObjects.Contract
+    PROJECT_NAME_CONFIGURATION: Supercode.Core.ProxyObjects.Configuration
+    PROJECT_NAME_DISPATCH_PROXY: Supercode.Core.ProxyObjects.DispatchProxy
+    PROJECT_NAME_DYNAMIC_PROXY: Supercode.Core.ProxyObjects.DynamicProxy
+    
+    GITHUB_FEED: https://nuget.pkg.github.com/cschulzsuper/index.json
+    NUGET_FEED: https://api.nuget.org/v3/index.json
+    PACKAGE_VERSION: ${{ github.event.release.tag_name }}
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+    permissions:
+      packages: write
+      contents: read
+
+    steps:
+          
+    - uses: actions/checkout@v2
+  
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 5.0.202
+    
+    - name: Restore dependencies
+      run: dotnet restore
+      
+    - name: Build Implementation
+      run: dotnet build -c Release --no-restore -p:Version=${PACKAGE_VERSION/v} src/$PROJECT_NAME_IMPLEMENTATION/$PROJECT_NAME_IMPLEMENTATION.csproj
+
+    - name: Pack Implementation
+      run: dotnet pack -v normal -c Release --no-restore --include-symbols --include-source -p:PackageVersion=${PACKAGE_VERSION/v} src/$PROJECT_NAME_IMPLEMENTATION/$PROJECT_NAME_IMPLEMENTATION.csproj
+
+    - name: Push Implementation to GitHub Feed
+      run: dotnet nuget push ./src/${{ env.PROJECT_NAME_IMPLEMENTATION }}/bin/Release/*.nupkg --source $GITHUB_FEED --api-key ${{secrets.GITHUB_TOKEN}} --skip-duplicate --no-symbols true
+
+    - name: Upload Artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: nupkg
+        path: ./src/${{ env.PROJECT_NAME_IMPLEMENTATION }}/bin/Release/*.nupkg
+
+    - name: Build Contract
+      run: dotnet build -c Release --no-restore -p:Version=${PACKAGE_VERSION/v} src/$PROJECT_NAME_CONTRACT/$PROJECT_NAME_CONTRACT.csproj
+
+    - name: Pack Contract
+      run: dotnet pack -v normal -c Release --no-restore --include-symbols --include-source -p:PackageVersion=${PACKAGE_VERSION/v} src/$PROJECT_NAME_CONTRACT/$PROJECT_NAME_CONTRACT.csproj
+
+    - name: Push Contract to GitHub Feed
+      run: dotnet nuget push ./src/${{ env.PROJECT_NAME_CONTRACT }}/bin/Release/*.nupkg --source $GITHUB_FEED --api-key ${{secrets.GITHUB_TOKEN}} --skip-duplicate --no-symbols true
+
+    - name: Upload Artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: nupkg
+        path: ./src/${{ env.PROJECT_NAME_CONTRACT }}/bin/Release/*.nupkg
+
+
+    - name: Build Default
+      run: dotnet build -c Release --no-restore -p:Version=${PACKAGE_VERSION/v} src/$PROJECT_NAME_CONFIGURATION/$PROJECT_NAME_CONFIGURATION.csproj
+
+    - name: Pack Default
+      run: dotnet pack -v normal -c Release --no-restore --include-symbols --include-source -p:PackageVersion=${PACKAGE_VERSION/v} src/$PROJECT_NAME_CONFIGURATION/$PROJECT_NAME_CONFIGURATION.csproj
+
+    - name: Push Default to GitHub Feed
+      run: dotnet nuget push ./src/${{ env.PROJECT_NAME_CONFIGURATION }}/bin/Release/*.nupkg --source $GITHUB_FEED --api-key ${{secrets.GITHUB_TOKEN}} --skip-duplicate --no-symbols true
+
+    - name: Upload Artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: nupkg
+        path: ./src/${{ env.PROJECT_NAME_CONFIGURATION }}/bin/Release/*.nupkg
+
+
+    - name: Build Default
+      run: dotnet build -c Release --no-restore -p:Version=${PACKAGE_VERSION/v} src/$PROJECT_NAME_DISPATCH_PROXY/$PROJECT_NAME_DISPATCH_PROXY.csproj
+
+    - name: Pack Default
+      run: dotnet pack -v normal -c Release --no-restore --include-symbols --include-source -p:PackageVersion=${PACKAGE_VERSION/v} src/$PROJECT_NAME_DISPATCH_PROXY/$PROJECT_NAME_DISPATCH_PROXY.csproj
+
+    - name: Push Default to GitHub Feed
+      run: dotnet nuget push ./src/${{ env.PROJECT_NAME_DISPATCH_PROXY }}/bin/Release/*.nupkg --source $GITHUB_FEED --api-key ${{secrets.GITHUB_TOKEN}} --skip-duplicate --no-symbols true
+
+    - name: Upload Artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: nupkg
+        path: ./src/${{ env.PROJECT_NAME_DISPATCH_PROXY }}/bin/Release/*.nupkg
+
+
+    - name: Build Default
+      run: dotnet build -c Release --no-restore -p:Version=${PACKAGE_VERSION/v} src/$PROJECT_NAME_DYNAMIC_PROXY/$PROJECT_NAME_DYNAMIC_PROXY.csproj
+
+    - name: Pack Default
+      run: dotnet pack -v normal -c Release --no-restore --include-symbols --include-source -p:PackageVersion=${PACKAGE_VERSION/v} src/$PROJECT_NAME_DYNAMIC_PROXY/$PROJECT_NAME_DYNAMIC_PROXY.csproj
+
+    - name: Push Default to GitHub Feed
+      run: dotnet nuget push ./src/${{ env.PROJECT_NAME_DYNAMIC_PROXY }}/bin/Release/*.nupkg --source $GITHUB_FEED --api-key ${{secrets.GITHUB_TOKEN}} --skip-duplicate --no-symbols true
+
+    - name: Upload Artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: nupkg
+        path: ./src/${{ env.PROJECT_NAME_DYNAMIC_PROXY }}/bin/Release/*.nupkg
+
+  release:
+    needs: build
+    if: github.event.release.prerelease == false
+    runs-on: ubuntu-latest
+    steps:
+      
+      - name: Download Artifact
+        uses: actions/download-artifact@v1
+        with:
+          name: nupkg
+    
+      - name: Push to Nuget Feed
+        run: dotnet nuget push ./nupkg/*.nupkg --source $NUGET_FEED --skip-duplicate --api-key ${{ secrets.NUGET_API_KEY }}
