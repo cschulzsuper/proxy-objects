@@ -42,9 +42,13 @@ namespace ConsoleApp
         public async Task Run()
         {
             _scopeValueStack.Push<ApplicationState, DateTimeOffset>(x => x.StartupTimestamp, DateTimeOffset.Now);
-
-            _logger.LogInformation("Hello World!");
             await Task.Delay(1000);
+
+            if (_applicationState.SayHello)
+            {
+                _logger.LogInformation(_applicationState.WelcomeMessage);
+                await Task.Delay(1000);
+            }
 
             _logger.LogInformation($"The application started started at {_applicationState.StartupTimestamp}");
             await Task.Delay(1000);

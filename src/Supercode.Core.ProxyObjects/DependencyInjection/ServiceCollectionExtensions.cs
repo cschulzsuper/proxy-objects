@@ -15,7 +15,7 @@ namespace Supercode.Core.ProxyObjects.DependencyInjection
             services.AddScoped<IProxyValueKeyProvider, ProxyValueKeyProvider>();
 
             services.Configure(configure);
-
+            
             return services;
         }
 
