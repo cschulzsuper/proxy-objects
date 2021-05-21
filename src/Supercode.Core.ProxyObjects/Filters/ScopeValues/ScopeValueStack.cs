@@ -64,18 +64,18 @@ namespace Supercode.Core.ProxyObjects.Filters.ScopeValues
         {
             if (property is not LambdaExpression lambdaExpression)
             {
-                throw new ProxyObjectsException("Expression is not a lambda expression");
+                throw new ProxyObjectsException($"Expression is not a lambda expression");
             }
 
             if (lambdaExpression.Body is not MemberExpression memberExpression)
             {
-                throw new ProxyObjectsException("Expression is not a member expression");
+                throw new ProxyObjectsException($"Expression is not a member expression");
             }
 
             var propertyInfo = memberExpression.Member as PropertyInfo;
             if (propertyInfo == null)
             {
-                throw new ProxyObjectsException("Expression is not a property expression");
+                throw new ProxyObjectsException($"Expression is not a property expression");
             }
 
             var propertyKeyAttribute = _proxyValueKeyProvider.Get(propertyInfo);

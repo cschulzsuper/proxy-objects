@@ -25,7 +25,7 @@ namespace Supercode.Core.ProxyObjects.Filters
                 return;
             }
 
-            throw new ProxyObjectsException("The type of the default value does not match the property type");
+            throw new ProxyObjectsException($"The type of the default value does not match the property type");
         }
     }
 }

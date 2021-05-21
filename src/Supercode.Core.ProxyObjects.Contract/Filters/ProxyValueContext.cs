@@ -11,9 +11,10 @@ namespace Supercode.Core.ProxyObjects.Filters
         {
             get => ResultSet.ContainsKey(PropertyKeyPrefix)
                 ? ResultSet[PropertyKeyPrefix]
-                : throw new ProxyObjectsException("Result value is not available");
+                : throw new ProxyObjectsException($"Result value for property '{Property.PropertyType.Name}.{Property.Name}' is not available");
 
-            set => ResultSet[PropertyKeyPrefix] = value ?? throw new ProxyObjectsException("Value can not be null");
+            set => ResultSet[PropertyKeyPrefix] = value 
+                ?? throw new ProxyObjectsException($"Result value for property '{Property.PropertyType.Name}.{Property.Name}' can not be null");
         }
 
         public IDictionary<string, TResult> ResultSet { get; } = new Dictionary<string, TResult>();

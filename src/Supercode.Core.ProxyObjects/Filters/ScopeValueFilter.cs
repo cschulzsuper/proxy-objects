@@ -33,7 +33,7 @@ namespace Supercode.Core.ProxyObjects.Filters
                     continue;
                 }
 
-                throw new ProxyObjectsException("The type of a scoped value does not match the property type");
+                throw new ProxyObjectsException($"The type of a scoped value does not match the property type");
             }
         }
     }

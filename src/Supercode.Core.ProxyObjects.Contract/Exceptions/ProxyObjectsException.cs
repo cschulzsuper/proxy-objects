@@ -21,16 +21,10 @@ namespace Supercode.Core.ProxyObjects.Exceptions
             UnformattedMessage = message;
         }
 
-        public ProxyObjectsException(string message, params object[] parameters)
-            : base(string.Format(message, parameters))
+        public ProxyObjectsException(FormattableString message, Exception inner)
+            : base(message.ToString(), inner)
         {
-            UnformattedMessage = FormattableStringFactory.Create(message, parameters);
-        }
-
-        public ProxyObjectsException(string message, Exception inner, params object[] parameters)
-            : base(string.Format(message, parameters), inner)
-        {
-            UnformattedMessage = FormattableStringFactory.Create(message, parameters);
+            UnformattedMessage = message;
         }
 
         protected ProxyObjectsException(SerializationInfo info, StreamingContext context)

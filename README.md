@@ -9,6 +9,10 @@ A proxy object injection for the .NET dependency injection.
 Once the first release is ready, it will be available on [Nuget](https://www.nuget.org/).  
 You can download a preview version [here](https://github.com/cschulzsuper/proxy-objects/packages/).
 
+## Demo
+
+A demo will become available in the future.
+
 ## Overview
 
 This library makes it possible to inject proxy objects into your services.
