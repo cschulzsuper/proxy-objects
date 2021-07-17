@@ -1,7 +1,9 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Supercode.Core.ProxyObjects.Filters;
 using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Supercode.Core.ProxyObjects
@@ -21,6 +23,7 @@ namespace Supercode.Core.ProxyObjects
             await next();
 
             var configurationKeyPrefix = context.PropertyKeyPrefix.Replace(".", ":");
+            var configurationType = typeof(TResult);
 
             var configurationSection = _configuration.GetSection(configurationKeyPrefix);
             var configurationValues = configurationSection.Exists()
@@ -29,13 +32,19 @@ namespace Supercode.Core.ProxyObjects
 
             foreach (var (configurationKey, _) in configurationValues)
             {
-                var configurationType = typeof(TResult);
-
+                if (configurationKey == configurationKeyPrefix &&
+                    context.Property.PropertyType != typeof(string) &&
+                    context.Property.PropertyType.IsAssignableTo(typeof(IEnumerable)))
+                {
+                    continue;
+                }
+                
                 var propertyKey = configurationKey.Replace(":", ".");
-                var propertyValue = (TResult)_configuration.GetValue(
-                    configurationType, configurationKey);
-
-                context.ResultSet[propertyKey] = propertyValue;
+                var propertyValue = (TResult)_configuration.GetSection(configurationKey).Get(configurationType);
+                if (propertyValue != null)
+                {
+                    context.ResultSet[propertyKey] = propertyValue;
+                }
             }
         }
     }

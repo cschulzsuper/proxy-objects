@@ -1,5 +1,6 @@
 ﻿using Supercode.Core.ProxyObjects.Attributes;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 
 namespace ConsoleApp.ProxyObjects
@@ -15,5 +16,8 @@ namespace ConsoleApp.ProxyObjects
         [DefaultValue(true)]
         [ProxyValueKey("ApplicationState.SayHello")]
         public virtual bool SayHello { get; }
+
+        [ProxyValueKey("ApplicationState.Messages")]
+        public virtual IEnumerable<Message> Messages { get; }
     }
 }

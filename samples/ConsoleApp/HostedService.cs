@@ -3,6 +3,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Supercode.Core.ProxyObjects.Filters.ScopeValues;
 using System;
+using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -47,6 +48,14 @@ namespace ConsoleApp
             if (_applicationState.SayHello)
             {
                 _logger.LogInformation(_applicationState.WelcomeMessage);
+                await Task.Delay(1000);
+
+                _logger.LogInformation(JsonSerializer.Serialize(
+                    _applicationState.Messages,
+                    new JsonSerializerOptions()
+                    {
+                        WriteIndented = true
+                    }));
                 await Task.Delay(1000);
             }
 
